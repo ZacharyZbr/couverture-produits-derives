@@ -22,11 +22,20 @@ public class Program
 
         JsonParser donneesJson = new JsonParser(pathTestParams);
         TestParameters testParams = donneesJson.GiveParameter();
-        IRebalancingOracleDescription rebalancingOracle = testParams.RebalancingOracleDescription;
 
-        var type = rebalancingOracle.Type;
+        IRebalancingOracleDescription rebalancingOracleDescription = testParams.RebalancingOracleDescription;
+        IRebalancingOracle rebalancingOracle; 
+        if (rebalancingOracleDescription.Type == RebalancingOracleType.Regular)
+        {
+            RegularOracleDescription regular = (RegularOracleDescription)rebalancingOracleDescription;
+            rebalancingOracle = new RegularRebalancingOracle(regular.Period);
+        }
 
-        Console.WriteLine(type);
+        else
+        {
+            WeeklyOracleDescription week = (WeeklyOracleDescription)rebalancingOracleDescription;
+            rebalancingOracle = new WeeklyRebalancingOracle(week.RebalancingDay);
+        }
 
         var test = new ListMarketData();
         test.ReadCSVFile(mktData);
@@ -56,20 +65,20 @@ public class Program
         portfolioRealValues.Add(new PortfolioPrice { DateOfPrice = listDatafeed[0].Date, Price = book.PfValueBeforeRebalancing(book.Composition, listDatafeed[0].PriceList, listDatafeed[0].Date) });
         for (int i = 1; i < listDatafeed.Count; i++)
         {
-            for (int k = 1; k <= listDatafeed[i].PriceList.Count; k++)
-                spot[k - 1] = listDatafeed[i].PriceList["share_" + k];
-            PortfolioTheoreticalValues.Add(new PortfolioPrice { DateOfPrice = listDatafeed[i].Date, Price = pricer.Price(MathDateConverter.ConvertToMathDistance(listDatafeed[i].Date, maturity), spot).Price });
-
-            deltas = book.getDeltas(pricer, testParams, listDatafeed[i], listDatafeed[i].Date);
-            portfolioRealValues.Add(new PortfolioPrice { DateOfPrice = listDatafeed[i].Date, Price = book.PfValueBeforeRebalancing(book.Composition, listDatafeed[i].PriceList, listDatafeed[i].Date) });
-            book.Rebalancing(deltas, listDatafeed[i].PriceList, listDatafeed[i].Date);
-            foreach (KeyValuePair<string, double> data in book.Composition)
-            {
-                Console.WriteLine("share: {0}, Valeur: {1}",
-                    data.Key, data.Value);
+            if (rebalancingOracle.RebalancingTime(listDatafeed[i].Date)){
+                for (int k = 1; k <= listDatafeed[i].PriceList.Count; k++)
+                    spot[k - 1] = listDatafeed[i].PriceList["share_" + k];
+                PortfolioTheoreticalValues.Add(new PortfolioPrice { DateOfPrice = listDatafeed[i].Date, Price = pricer.Price(MathDateConverter.ConvertToMathDistance(listDatafeed[i].Date, maturity), spot).Price });
+                deltas = book.getDeltas(pricer, testParams, listDatafeed[i], listDatafeed[i].Date);
+                portfolioRealValues.Add(new PortfolioPrice { DateOfPrice = listDatafeed[i].Date, Price = book.PfValueBeforeRebalancing(book.Composition, listDatafeed[i].PriceList, listDatafeed[i].Date) });
+                book.Rebalancing(deltas, listDatafeed[i].PriceList, listDatafeed[i].Date);
+                foreach (KeyValuePair<string, double> data in book.Composition)
+                {
+                    Console.WriteLine("share: {0}, Valeur: {1}",
+                        data.Key, data.Value);
+                }
+                Console.WriteLine("Quantité sans risque : " + book.RiskFreeQuantity);
             }
-            Console.WriteLine("Quantité sans risque : " + book.RiskFreeQuantity);
-
         }
         foreach (PortfolioPrice data in portfolioRealValues)
         {

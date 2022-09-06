@@ -64,7 +64,7 @@
     ]
   },
   "RebalancingOracleDescription": {
-    "Period": 1,
-    "Type": "Regular"
+    "RebalancingDay": 1,
+    "Type": "Weekly"
   }
 }
