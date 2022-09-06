@@ -82,4 +82,11 @@ namespace AutofinancingSystematicPortfolio
             }*/
 
     }
+
+    public class PortfolioPrice
+    {
+        public DateTime DateOfPrice { get; set; }
+        public double Price { get; set; }
+
+    }
 }

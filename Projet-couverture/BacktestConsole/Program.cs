@@ -7,7 +7,7 @@ using MathNet.Numerics.Distributions;
 using CsvHelper;
 using System.Globalization;
 using AutofinancingSystematicPortfolio;
-
+using PricingLibrary.RebalancingOracleDescriptions;
 
 
 
@@ -15,25 +15,30 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        string pathTestParams = args[0];
-        string mktData = args[1];   
-        string pfVals = args[2];    
-        string tfVals = args[3];    
+        string pathTestParams = "C:\\Users\\localuser\\Documents\\projet-couverture\\Projet-couverture\\TestParameters\\share_5_strike_11.json"; //args[0];
+        string mktData = "C:\\Users\\localuser\\Documents\\projet-couverture\\Projet-couverture\\MarketData\\InputCSVFile\\data_share_5_3.csv"; // args[1];   
+        string pfVals = "C:\\Users\\localuser\\Documents\\projet-couverture\\Projet-couverture\\MarketData\\OutputCSVFile\\realValues.csv"; // args[2];    
+        string tfVals = "C:\\Users\\localuser\\Documents\\projet-couverture\\Projet-couverture\\MarketData\\OutputCSVFile\\theoricalValues.csv"; // args[3];    
 
         JsonParser donneesJson = new JsonParser(pathTestParams);
         TestParameters testParams = donneesJson.GiveParameter();
+        IRebalancingOracleDescription rebalancingOracle = testParams.RebalancingOracleDescription;
 
+        var type = rebalancingOracle.Type;
 
+        Console.WriteLine(type);
 
         var test = new ListMarketData();
         test.ReadCSVFile(mktData);
         List<ShareValue> datas = test.GetListSharedValue();
         List<DataFeed> listDatafeed = test.GetDataFeed();
+        
 
 
 
         /* TEST de la boucle */
-        List<ReplicatingPortfolio> listReplicatingPortfolios = new List<ReplicatingPortfolio>();
+        List<PortfolioPrice> portfolioRealValues = new List<PortfolioPrice>();
+        List<PortfolioPrice> PortfolioTheoreticalValues = new List<PortfolioPrice>();
         Pricer pricer = new Pricer(testParams);
         DateTime maturity = testParams.BasketOption.Maturity;
         DateTime startDate = listDatafeed[0].Date;
@@ -42,37 +47,44 @@ public class Program
         for (int i = 1; i <= listDatafeed[0].PriceList.Count; i++)
             spot[i - 1] = listDatafeed[0].PriceList["share_" + i];
         double P0 = pricer.Price(timeToMaturity, spot).Price;
+        PortfolioTheoreticalValues.Add(new PortfolioPrice { DateOfPrice = listDatafeed[0].Date, Price = P0 });
         Dictionary<String, double> deltas = new Dictionary<string, double>();
         double[] tabDelta = pricer.Price(timeToMaturity, spot).Deltas;
         for (int i = 1; i <= tabDelta.Length; i++)
             deltas["share_" + i] = tabDelta[i - 1];
         AutofinancingPortfolio book = new AutofinancingPortfolio(P0, listDatafeed[0].PriceList, deltas, startDate);
-
+        portfolioRealValues.Add(new PortfolioPrice { DateOfPrice = listDatafeed[0].Date, Price = book.PfValueBeforeRebalancing(book.Composition, listDatafeed[0].PriceList, listDatafeed[0].Date) });
         for (int i = 1; i < listDatafeed.Count; i++)
         {
+            for (int k = 1; k <= listDatafeed[i].PriceList.Count; k++)
+                spot[k - 1] = listDatafeed[i].PriceList["share_" + k];
+            PortfolioTheoreticalValues.Add(new PortfolioPrice { DateOfPrice = listDatafeed[i].Date, Price = pricer.Price(MathDateConverter.ConvertToMathDistance(listDatafeed[i].Date, maturity), spot).Price });
+
             deltas = book.getDeltas(pricer, testParams, listDatafeed[i], listDatafeed[i].Date);
+            portfolioRealValues.Add(new PortfolioPrice { DateOfPrice = listDatafeed[i].Date, Price = book.PfValueBeforeRebalancing(book.Composition, listDatafeed[i].PriceList, listDatafeed[i].Date) });
             book.Rebalancing(deltas, listDatafeed[i].PriceList, listDatafeed[i].Date);
             foreach (KeyValuePair<string, double> data in book.Composition)
             {
-                listReplicatingPortfolios.Add(new ReplicatingPortfolio { Id = data.Key, DateOfPrice = listDatafeed[i].Date, Composition = data.Value, Price = listDatafeed[i].PriceList[data.Key] });
                 Console.WriteLine("share: {0}, Valeur: {1}",
                     data.Key, data.Value);
             }
             Console.WriteLine("Quantité sans risque : " + book.RiskFreeQuantity);
 
         }
-        foreach (ReplicatingPortfolio data in listReplicatingPortfolios)
+        foreach (PortfolioPrice data in portfolioRealValues)
         {
-            Console.WriteLine(data.Id);
             Console.WriteLine(data.DateOfPrice);
             Console.WriteLine(data.Price);
-            Console.WriteLine(data.Composition);
         }
-        string filename = "C:\\Users\\localuser\\Documents\\projet-net-2.0\\test.csv";
-        using (var writer = new StreamWriter(filename))
+        using (var writer = new StreamWriter(pfVals))
         using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
         {
-            csv.WriteRecords(listReplicatingPortfolios);
+            csv.WriteRecords(portfolioRealValues);
+        }
+        using (var writer = new StreamWriter(tfVals))
+        using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+        {
+            csv.WriteRecords(PortfolioTheoreticalValues);
         }
 
     }

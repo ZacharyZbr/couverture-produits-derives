@@ -58,13 +58,4 @@ namespace AutofinancingSystematicPortfolio
 
     }
 
-    public class ReplicatingPortfolio
-    {
-        public string Id { get; set; }
-        public DateTime DateOfPrice { get; set; }
-        public double Composition { get; set; }
-        public double Price { get; set; }
-
-    }
-
 }
