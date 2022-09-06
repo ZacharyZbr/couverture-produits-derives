@@ -1,24 +1,33 @@
 ﻿using CsvHelper;
 using PricingLibrary.MarketDataFeed;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Globalization;
+
 
 
 namespace AutofinancingSystematicPortfolio
 {
+    /// <summary>
+    /// Classe permettant de manipuler les prix des actions
+    /// </summary>
     public class ListMarketData
     {
-        private List<ShareValue> Listdata = new List<ShareValue>();
-        public List<ShareValue> GetListSharedValue()
+        /// <summary>
+        /// Liste des données sur les sous-jacents de l'option
+        /// </summary>
+        public List<ShareValue> Listdata {get; private set;}
+
+        /// <summary>
+        /// Constructeur de la liste recepérant les données
+        /// </summary>
+        public ListMarketData()
         {
-            return Listdata;
+            Listdata = new List<ShareValue>();
         }
 
+        /// <summary>
+        /// Parse un fichier CSV contenant une colonne Id, DateOfPrice, et Value.
+        /// </summary>
+        /// <param name="mktData">Chemin du fichier à parser</param>
         public void ReadCSVFile(string mktData)
         {
             using (var reader = new StreamReader(mktData))
@@ -32,6 +41,10 @@ namespace AutofinancingSystematicPortfolio
             }
         }
 
+        /// <summary>
+        /// Permet de transformer la liste des données obtenues en liste de DataFeed
+        /// </summary>
+        /// <returns></returns>
         public List<DataFeed> GetDataFeed()
         {
             List<DataFeed> listDataFeed = new List<DataFeed>();

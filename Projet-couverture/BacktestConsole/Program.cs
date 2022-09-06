@@ -39,7 +39,7 @@ public class Program
 
         var test = new ListMarketData();
         test.ReadCSVFile(mktData);
-        List<ShareValue> datas = test.GetListSharedValue();
+        List<ShareValue> datas = test.Listdata;
         List<DataFeed> listDatafeed = test.GetDataFeed();
         
 
@@ -69,7 +69,7 @@ public class Program
                 for (int k = 1; k <= listDatafeed[i].PriceList.Count; k++)
                     spot[k - 1] = listDatafeed[i].PriceList["share_" + k];
                 PortfolioTheoreticalValues.Add(new PortfolioPrice { DateOfPrice = listDatafeed[i].Date, Price = pricer.Price(MathDateConverter.ConvertToMathDistance(listDatafeed[i].Date, maturity), spot).Price });
-                deltas = book.getDeltas(pricer, testParams, listDatafeed[i], listDatafeed[i].Date);
+                deltas = book.getDeltas(pricer, maturity, listDatafeed[i]);
                 portfolioRealValues.Add(new PortfolioPrice { DateOfPrice = listDatafeed[i].Date, Price = book.PfValueBeforeRebalancing(book.Composition, listDatafeed[i].PriceList, listDatafeed[i].Date) });
                 book.Rebalancing(deltas, listDatafeed[i].PriceList, listDatafeed[i].Date);
                 foreach (KeyValuePair<string, double> data in book.Composition)
