@@ -1,0 +1,70 @@
+{
+	"PricingParams": {
+		"Volatilities": [
+			0.2,
+			0.2,
+			0.2,
+			0.2,
+			0.2
+		],
+		"Correlations": [
+			[
+				1,
+				0.15,
+				0.15,
+				0.15,
+				0.15
+			],
+			[
+				0.15,
+				1,
+				0.15,
+				0.15,
+				0.15
+			],
+			[
+				0.15,
+				0.15,
+				1,
+				0.15,
+				0.15
+			],
+			[
+				0.15,
+				0.15,
+				0.15,
+				1,
+				0.15
+			],
+			[
+				0.15,
+				0.15,
+				0.15,
+				0.15,
+				1
+			]
+		]
+	},
+	"BasketOption": {
+		"Strike": 10,
+		"Maturity": "2022-12-12T00:00:00",
+		"UnderlyingShareIds": [
+			"share_1",
+			"share_2",
+			"share_3",
+			"share_4",
+			"share_5"
+		],
+		"Weights": [
+			0.2,
+			0.2,
+			0.2,
+			0.2,
+			0.2
+		]
+	},
+	"RebalancingOracleDescription": {
+		"Period": 1,
+		"Type": "Regular"
+	}
+}
