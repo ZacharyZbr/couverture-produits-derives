@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32819.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BacktestConsole", "BacktestConsole\BacktestConsole.csproj", "{C701F4A9-DEB9-4606-A902-2BD979AF920B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BacktestConsole", "BacktestConsole\BacktestConsole.csproj", "{C701F4A9-DEB9-4606-A902-2BD979AF920B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutofinancingPortfolioLibrary", "AutofinancingPortfolioLibrary\AutofinancingPortfolioLibrary.csproj", "{BC4CC512-5600-47AF-9EB1-C6DC9E079995}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutofinancingPortfolioLibrary", "AutofinancingPortfolioLibrary\AutofinancingPortfolioLibrary.csproj", "{BC4CC512-5600-47AF-9EB1-C6DC9E079995}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrpcBacktestServer", "GrpcBacktestServer\GrpcBacktestServer.csproj", "{66E65D5A-5AF2-4D83-BF1E-47F233B07434}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrpcBacktestClient", "GrpcBacktestClient\GrpcBacktestClient.csproj", "{17442E82-C3DB-4643-BE29-06D35EF99C2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{BC4CC512-5600-47AF-9EB1-C6DC9E079995}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC4CC512-5600-47AF-9EB1-C6DC9E079995}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC4CC512-5600-47AF-9EB1-C6DC9E079995}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66E65D5A-5AF2-4D83-BF1E-47F233B07434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66E65D5A-5AF2-4D83-BF1E-47F233B07434}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66E65D5A-5AF2-4D83-BF1E-47F233B07434}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66E65D5A-5AF2-4D83-BF1E-47F233B07434}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17442E82-C3DB-4643-BE29-06D35EF99C2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17442E82-C3DB-4643-BE29-06D35EF99C2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17442E82-C3DB-4643-BE29-06D35EF99C2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17442E82-C3DB-4643-BE29-06D35EF99C2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
