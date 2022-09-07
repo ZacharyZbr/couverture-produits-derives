@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BacktestConsole", "Backtest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutofinancingPortfolioLibrary", "AutofinancingPortfolioLibrary\AutofinancingPortfolioLibrary.csproj", "{BC4CC512-5600-47AF-9EB1-C6DC9E079995}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{6FF96775-C76F-4701-A3E6-DC962746E536}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "UnitTest\UnitTest.csproj", "{6FF96775-C76F-4701-A3E6-DC962746E536}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrpcBacktestServer", "GrpcBacktestServer\GrpcBacktestServer.csproj", "{66E65D5A-5AF2-4D83-BF1E-47F233B07434}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcBacktestServer", "GrpcBacktestServer\GrpcBacktestServer.csproj", "{66E65D5A-5AF2-4D83-BF1E-47F233B07434}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrpcBacktestClient", "GrpcBacktestClient\GrpcBacktestClient.csproj", "{17442E82-C3DB-4643-BE29-06D35EF99C2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcBacktestClient", "GrpcBacktestClient\GrpcBacktestClient.csproj", "{17442E82-C3DB-4643-BE29-06D35EF99C2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +27,18 @@ Global
 		{BC4CC512-5600-47AF-9EB1-C6DC9E079995}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC4CC512-5600-47AF-9EB1-C6DC9E079995}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC4CC512-5600-47AF-9EB1-C6DC9E079995}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FF96775-C76F-4701-A3E6-DC962746E536}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FF96775-C76F-4701-A3E6-DC962746E536}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FF96775-C76F-4701-A3E6-DC962746E536}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FF96775-C76F-4701-A3E6-DC962746E536}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66E65D5A-5AF2-4D83-BF1E-47F233B07434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66E65D5A-5AF2-4D83-BF1E-47F233B07434}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66E65D5A-5AF2-4D83-BF1E-47F233B07434}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66E65D5A-5AF2-4D83-BF1E-47F233B07434}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17442E82-C3DB-4643-BE29-06D35EF99C2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17442E82-C3DB-4643-BE29-06D35EF99C2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17442E82-C3DB-4643-BE29-06D35EF99C2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17442E82-C3DB-4643-BE29-06D35EF99C2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

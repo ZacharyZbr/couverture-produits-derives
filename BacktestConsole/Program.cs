@@ -18,10 +18,10 @@ public class Program
         try
         {
             /* Getting instructions from the command line*/
-            string pathTestParams = "C:\\Users\\localuser\\Documents\\projet-couverture\\Projet-couverture\\TestParameters\\share_5_strike_10.json"; //args[0];
-            string mktData = "C:\\Users\\localuser\\Documents\\projet-couverture\\Projet-couverture\\MarketData\\InputCSVFile\\data_share_5_3.csv"; // args[1];   
-            string pfVals = "C:\\Users\\localuser\\Documents\\projet-couverture\\Projet-couverture\\MarketData\\OutputCSVFile\\realValues.csv"; // args[2];    
-            string tfVals = "C:\\Users\\localuser\\Documents\\projet-couverture\\Projet-couverture\\MarketData\\OutputCSVFile\\theoricalValues.csv"; // args[3];    
+            string pathTestParams = "C:\\Users\\localuser\\Documents\\projet-couverture\\TestParameters\\share_5_strike_10.json"; //args[0];
+            string mktData = "C:\\Users\\localuser\\Documents\\projet-couverture\\MarketData\\InputCSVFile\\data_share_5_3.csv"; // args[1];   
+            string pfVals = "C:\\Users\\localuser\\Documents\\projet-couverture\\MarketData\\OutputCSVFile\\realValues.csv"; // args[2];    
+            string tfVals = "C:\\Users\\localuser\\Documents\\projet-couverture\\MarketData\\OutputCSVFile\\theoricalValues.csv"; // args[3];    
 
             /* Getting the test parameters in the .json and the market data .csv */
             JsonParser donneesJson = new JsonParser(pathTestParams);
