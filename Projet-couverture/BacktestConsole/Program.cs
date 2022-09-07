@@ -15,14 +15,16 @@ public class Program
 {
     public static void Main(string[] args)
     {
+
+        /* Getting instructions from the command line*/
         string pathTestParams = "C:\\Users\\localuser\\Documents\\projet-couverture\\Projet-couverture\\TestParameters\\share_5_strike_11.json"; //args[0];
         string mktData = "C:\\Users\\localuser\\Documents\\projet-couverture\\Projet-couverture\\MarketData\\InputCSVFile\\data_share_5_3.csv"; // args[1];   
         string pfVals = "C:\\Users\\localuser\\Documents\\projet-couverture\\Projet-couverture\\MarketData\\OutputCSVFile\\realValues.csv"; // args[2];    
         string tfVals = "C:\\Users\\localuser\\Documents\\projet-couverture\\Projet-couverture\\MarketData\\OutputCSVFile\\theoricalValues.csv"; // args[3];    
 
+        /* Getting the test parameters in the .json and the market data .csv */
         JsonParser donneesJson = new JsonParser(pathTestParams);
         TestParameters testParams = donneesJson.GiveParameter();
-
         IRebalancingOracleDescription rebalancingOracleDescription = testParams.RebalancingOracleDescription;
         IRebalancingOracle rebalancingOracle; 
         if (rebalancingOracleDescription.Type == RebalancingOracleType.Regular)
@@ -36,16 +38,15 @@ public class Program
             WeeklyOracleDescription week = (WeeklyOracleDescription)rebalancingOracleDescription;
             rebalancingOracle = new WeeklyRebalancingOracle(week.RebalancingDay);
         }
-
         var test = new ListMarketData();
         test.ReadCSVFile(mktData);
         List<ShareValue> datas = test.Listdata;
         List<DataFeed> listDatafeed = test.GetDataFeed();
         
 
+        /* SYSTEMATIC STRATEGY */
 
-
-        /* TEST de la boucle */
+        // Initialization
         List<PortfolioPrice> portfolioRealValues = new List<PortfolioPrice>();
         List<PortfolioPrice> PortfolioTheoreticalValues = new List<PortfolioPrice>();
         Pricer pricer = new Pricer(testParams);
@@ -61,8 +62,12 @@ public class Program
         double[] tabDelta = pricer.Price(timeToMaturity, spot).Deltas;
         for (int i = 1; i <= tabDelta.Length; i++)
             deltas["share_" + i] = tabDelta[i - 1];
-        AutofinancingPortfolio book = new AutofinancingPortfolio(P0, listDatafeed[0].PriceList, deltas, startDate);
+
+        // instanciation of the autofinancing portfolio
+        AutofinancingPortfolio book = new AutofinancingPortfolio(P0, listDatafeed[0].PriceList, deltas, startDate); 
         portfolioRealValues.Add(new PortfolioPrice { DateOfPrice = listDatafeed[0].Date, Price = book.PfValueBeforeRebalancing(book.Composition, listDatafeed[0].PriceList, listDatafeed[0].Date) });
+
+        // Systematic strategy
         for (int i = 1; i < listDatafeed.Count; i++)
         {
             if (rebalancingOracle.RebalancingTime(listDatafeed[i].Date)){
@@ -80,11 +85,8 @@ public class Program
                 Console.WriteLine("Quantité sans risque : " + book.RiskFreeQuantity);
             }
         }
-        foreach (PortfolioPrice data in portfolioRealValues)
-        {
-            Console.WriteLine(data.DateOfPrice);
-            Console.WriteLine(data.Price);
-        }
+
+        // Writting in the output .csv files
         using (var writer = new StreamWriter(pfVals))
         using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
         {
